@@ -38,7 +38,7 @@ SELECT
     o.order_date
 FROM Orders o
 WHERE EXISTS (
-    SELECT 1
+    SELECT *
     FROM Order_Items oi
     JOIN Products p ON oi.product_id = p.product_id
     WHERE oi.order_id = o.order_id
