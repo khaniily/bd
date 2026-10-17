@@ -36,18 +36,21 @@ CREATE TABLE Clients (
     client_id INT PRIMARY KEY,
     client_email VARCHAR(255),
     client_name VARCHAR(255)
-)
+);
 
 CREATE TABLE Equipment (
     equipment_id INT PRIMARY KEY,
     equipment_name VARCHAR(255)
-)
+);
 
 CREATE TABLE EquipmentRentals (
-    client_id INT FOREIGN KEY,
-    equipment_id INT FOREIGN KEY,
+    client_id INT,
+    equipment_id INT,
     rental_date DATE,
-)
+    PRIMARY KEY (client_id, equipment_id),
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
+    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)
+);
 --3
 CREATE TABLE StudentGrades (
     student_id INT,
@@ -60,26 +63,32 @@ CREATE TABLE StudentGrades (
 --ошибка: 1нф - столбец assignments_and_grades не явл автономным. 
 -- 2нф - есть частичные зависимости. будет избыточность и повтор данных.
 
-CREATE TABLE Studet (
+CREATE TABLE Student (
     studet_id INT PRIMARY KEY,
     student_name VARCHAR(255)
 );
 
-CREATE TABLE Course (
-    course_id INT PRIMARY KEY,
-    professor_id INT FOREIGN KEY
-);
-
-CREATE TABLE Profеssor (
+CREATE TABLE Professor (
     course_professor VARCHAR(255)
     professor_id INT PRIMARY KEY
 );
-CREATE TABLE assignments (
-    assignments_id INT PRIMARY KEY,
-    assignments_name VARCHAR(255)
+
+CREATE TABLE Course (
+    course_id INT PRIMARY KEY,
+    professor_id INT,
+    FOREIGN KEY (professor_id) REFERENCES Professor(professor_id)
+);
+CREATE TABLE Assignment (
+    assignment_id INT PRIMARY KEY,
+    assignment_name VARCHAR(255)
 );
 CREATE TABLE  Assignments_and_grades (
-    studet_id INT FOREIGN KEY,
-    course_id INT FOREIGN KEY,
-    assignments_id INT FOREIGN KEY,
+    studet_id INT,
+    course_id INT,
+    assignment_id INT,
+    grade INT,
+    PRIMARY KEY (student_id, course_id, assignment_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (course_id) REFERENCES Course(course_id),
+    FOREIGN KEY (assignment_id) REFERENCES Assignment(assignment_id)
 )
